@@ -10,9 +10,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';
 import { HeaderComponent } from './components/layout/header/header.component';
-import { SearchUserComponent } from './components/search-user/search-user.component';
+import { UserSearchComponent } from './components/user-search/user-search.component';
 import { ShowUserComponent } from './components/show-user/show-user.component';
-import { DataStoreService } from './services/data-store.service';
+import { DataStore } from './services/data.store';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -21,8 +22,9 @@ import { DataStoreService } from './services/data-store.service';
     HomeComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    SearchUserComponent,
-    ShowUserComponent
+    UserSearchComponent,
+    ShowUserComponent,
+    SearchbarComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,7 @@ import { DataStoreService } from './services/data-store.service';
     { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
     { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
     { provide: REALM, useValue: 'realm' },
-    DataStoreService
+    DataStore
   ],
   bootstrap: [AppComponent]
 })

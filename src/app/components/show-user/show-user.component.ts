@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DataStoreService } from '../../services/data-store.service';
+import { DataStore } from '../../services/data.store';
 
 @Component({
   selector: 'app-show-user',
@@ -8,9 +8,19 @@ import { DataStoreService } from '../../services/data-store.service';
 })
 export class ShowUserComponent implements OnInit {
 
+  public checkUserExist = false;
   constructor(
-    private store: DataStoreService
-  ) { }
+    private store: DataStore
+  ) {
+    store.users.subscribe(
+      res => {
+        if (res !== '' && res.length === 0) {
+          this.checkUserExist = false;
+        } else {
+          this.checkUserExist = true;
+        }
+    });
+  }
 
   ngOnInit() {
   }
