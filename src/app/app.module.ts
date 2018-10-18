@@ -10,10 +10,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';
 import { HeaderComponent } from './components/layout/header/header.component';
-import { UserSearchComponent } from './components/user-search/user-search.component';
-import { ShowUserComponent } from './components/show-user/show-user.component';
-import { DataStore } from './services/data.store';
-import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { UsersContainerComponent } from './components/users-container/users-container.component';
+import { UsersListComponent } from './components/users-container/users-list/users-list.component';
+import { UsersDataStore } from './services/users-data.store';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -22,9 +22,9 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     HomeComponent,
     PageNotFoundComponent,
     HeaderComponent,
-    UserSearchComponent,
-    ShowUserComponent,
-    SearchbarComponent
+    UsersContainerComponent,
+    UsersListComponent,
+    SearchBarComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +39,7 @@ import { SearchbarComponent } from './components/searchbar/searchbar.component';
     { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
     { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
     { provide: REALM, useValue: 'realm' },
-    DataStore
+    UsersDataStore
   ],
   bootstrap: [AppComponent]
 })

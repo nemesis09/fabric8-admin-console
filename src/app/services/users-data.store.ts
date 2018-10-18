@@ -4,9 +4,9 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DataStore {
+export class UsersDataStore {
 
-  private _users = new BehaviorSubject('');
+  private _users = new BehaviorSubject([]);
 
   constructor() { }
 
@@ -14,8 +14,7 @@ export class DataStore {
     return this._users.asObservable();
   }
 
-  addUsers(username) {
-    this._users.next(username);
-    console.log('(in data-store) users saved');
+  addUsers(users) {
+    this._users.next(users);
   }
 }

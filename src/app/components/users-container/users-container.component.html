@@ -1,0 +1,10 @@
+<app-search-bar
+(search) = searchUsers($event)></app-search-bar>
+
+<div *ngIf = "errorLog; else showUsers">
+    <h3>{{ errorLog }}</h3>
+</div>
+
+<ng-template #showUsers>
+    <app-users-list [usersList] = "users"></app-users-list>
+</ng-template>
