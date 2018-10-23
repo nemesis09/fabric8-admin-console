@@ -1,8 +1,10 @@
-<div *ngIf = "usersList.length; else noUser">
-  <div *ngFor="let user of usersList">
+<div *ngIf = "users">
+  <div *ngIf = "users.length; else noUser">
+  <div *ngFor="let user of users">
     <h3>{{ user.attributes.fullName }}</h3>
     <h4>{{ user.attributes.email }}</h4>
   </div>
+</div>
 </div>
 
 <ng-template #noUser>

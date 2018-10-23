@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  handleLogin() {
+  handleLogin(): void {
     this.loginService.redirectToAuth();
   }
 

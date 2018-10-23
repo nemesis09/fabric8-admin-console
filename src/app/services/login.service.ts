@@ -23,23 +23,23 @@ export class LoginService {
     });
   }
 
-  redirectToAuth() {
+  redirectToAuth(): void {
     const redirectUrl = encodeURIComponent(window.location.href);
     const loginUrl = `${this.authApiUrl}login?redirect=${redirectUrl}`;
     window.location.href = loginUrl;
   }
 
-  redirectAfterLogin() {
+  redirectAfterLogin(): void {
     const url = this.redirectUrl;
     this.router.navigateByUrl(url);
   }
 
-  redirectToLogin(currentUrl: string) {
+  redirectToLogin(currentUrl: string): void {
     this.redirectUrl = currentUrl;
     window.location.href = LoginService.LOGIN_URL;
   }
 
-  login() {
+  login(): void {
     const query = window.location.search.substr(1);
     const result: any = {};
     query.split('&').forEach(function(part) {
@@ -63,7 +63,7 @@ export class LoginService {
     }
   }
 
-  logout() {
+  logout(): void {
     this.authService.logout();
     window.location.href = '/';
   }

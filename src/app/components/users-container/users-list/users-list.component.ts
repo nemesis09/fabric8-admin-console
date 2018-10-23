@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { User } from 'ngx-login-client';
 
 @Component({
   selector: 'app-users-list',
@@ -7,7 +8,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class UsersListComponent implements OnInit {
 
-  @Input() usersList: any[];
+  @Input() users: User[];
 
   ngOnInit() {
   }

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UserService } from 'ngx-login-client';
+import { UserService, User } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
-import { UsersDataStore } from '../../services/users-data.store';
+import { UsersDataStore } from '../../store/users-data.store';
 
 @Component({
   selector: 'app-users-container',
@@ -10,32 +10,36 @@ import { UsersDataStore } from '../../services/users-data.store';
 })
 export class UsersContainerComponent implements OnInit, OnDestroy {
 
-  private subscriptions: Subscription[];
-  users: any[];
-  errorLog;
+  private subscriptions: Subscription[] = new Array(new Subscription());
+  users: User[];
+  isSubscriptionError: boolean;
 
   constructor(
     private userService: UserService,
     private userStore: UsersDataStore
-    ) { }
+   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
-  searchUsers(searchTerms) {
-    this.subscriptions.push (
-      this.userService.getUsersBySearchString(searchTerms).subscribe(
-        users => {
+  searchUsers(searchTerm: string): void {
+    this.subscriptions.push(
+      this.userService
+        .getUsersBySearchString(searchTerm)
+        .subscribe((users: User[]) => {
           this.users = users;
           this.userStore.addUsers(users);
         },
-        err => this.errorLog = err
+         err => {
+          this.isSubscriptionError = false;
+        }
       )
     );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(element => {
-      element.unsubscribe();
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
     });
   }
 }
