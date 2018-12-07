@@ -16,6 +16,8 @@ import { UserStore } from './store/user.store';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { ListModule, ToolbarModule, FilterModule } from 'patternfly-ng';
 import { FormsModule } from '@angular/forms';
+import { CacheInterceptor } from './shared/cache.interceptor';
+import { RequestCache } from './services/request-cache.service';
 
 @NgModule({
   declarations: [
@@ -39,14 +41,16 @@ import { FormsModule } from '@angular/forms';
   ],
   providers: [
     AuthenticationService,
-    UserService,
-    Logger,
     Broadcaster,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
     { provide: AUTH_API_URL, useValue: 'https://auth.prod-preview.openshift.io/api/' },
     { provide: SSO_API_URL, useValue: 'https://sso.prod-preview.openshift.io/api/' },
     { provide: WIT_API_PROXY, useValue: 'https://prod-preview.openshift.io/api/' },
     { provide: REALM, useValue: 'realm' },
+    Logger,
+    RequestCache,
+    UserService,
     UserStore
   ],
   bootstrap: [AppComponent]

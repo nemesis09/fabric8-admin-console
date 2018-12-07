@@ -29,10 +29,8 @@ export class CacheInterceptor implements HttpInterceptor {
 
     return Observable.create(observer => {
       let asyncResponse = this.cache.get(req);
-      console.log(asyncResponse);
 
       if (!asyncResponse) {
-        console.log(`cache miss`);
         asyncResponse = new AsyncSubject<HttpResponse<any>>();
         this.cache.set(req, asyncResponse);
         next.handle(req).subscribe(asyncResponse);
