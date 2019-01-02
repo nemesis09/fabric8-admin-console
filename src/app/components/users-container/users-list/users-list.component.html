@@ -1,25 +1,50 @@
-<div class="user-list" *ngIf="users?.length > 0">
-  <!--toolbar starts -->
-  <div class="container-fluid">
-    <div class="row toolbar-pf">
-      <div class="col-sm-12">
-        <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"></pfng-toolbar>
+<div>
+  <div class="toolbar">
+    <!--toolbar starts -->
+    <div class="container-fluid">
+      <div class="row toolbar-pf">
+        <div class="col-sm-12 toolbar">
+          <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"></pfng-toolbar>
+        </div>
       </div>
     </div>
   </div>
   <!--toolbar ends-->
-  <!-- User List starts -->
-  <div class="padding-15">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="form-group">
-          <pfng-list
-            [config]="listConfig"
-            [expandTemplate]="expandTemplate"
-            [items]="items"
-            [itemTemplate]="itemTemplate">
-            <ng-template #itemTemplate let-item="item">
-              <div class="list-pf-left">
+  
+  <div class="results-area">
+    <ng-container [ngSwitch]="(viewState | async)">
+  
+      <ng-container *ngSwitchCase="'INIT'">
+        <div class="init-state">
+          <div class="fa-3x pficon pficon-info state-icon"></div>
+          <div class="state-title">Your Search Results Will Appear Here</div>
+          <div class="state-description">Based on your search, the results will be listed here.</div>
+        </div>
+      </ng-container>
+  
+      <ng-container *ngSwitchCase="'EMPTY'">
+        <div class="empty-state">
+          <div class="state-title">No Results Found</div>
+          <div class="state-description">No result found for your searched query. Change your search string and try again.</div>
+        </div>
+      </ng-container>
+  
+      <ng-container *ngSwitchCase="'LOADING'">
+        <div class="loading-state">
+          <span class="spinner spinner-lg spinner-inline"></span>
+          <span class="spinner-label">Loading your results...</span>
+        </div>
+      </ng-container>
+  
+      <ng-container *ngSwitchCase="'SHOW'">
+        <!-- User List starts -->
+        <div class="padding-15" *ngIf="users?.length > 0" appInfiniteScroll>
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="form-group">
+                <pfng-list [config]="listConfig" [expandTemplate]="expandTemplate" [items]="items" [itemTemplate]="itemTemplate">
+                  <ng-template #itemTemplate let-item="item">
+              <div class="list-pf-left userlist">
                 <span class="fa list-pf-icon list-pf-icon-bordered list-pf-icon-small">
                   <div *ngIf="(item.attributes.imageURL !== undefined && item.attributes.imageURL.length !== 0); then userImage else defaultImage"></div>
                   <ng-template #userImage>
@@ -49,7 +74,7 @@
                   <strong>Bio: </strong>
                   <span *ngIf="item.attributes.bio; else noBio "> {{item.attributes.bio}}</span>
                   <ng-template #noBio>No Bio found.</ng-template>
-              </li>
+                </li>
                 <li>
                   <span>
                     <strong>User ID: </strong> {{item.attributes.userID}}
@@ -68,4 +93,7 @@
     </div>
   </div>
   <!--Expandion Ends-->
-</div>
+  </ng-container>
+  </ng-container><!-- ngSwitch -->
+  </div><!-- results-area -->
+  

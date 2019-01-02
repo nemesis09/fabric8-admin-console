@@ -2,12 +2,26 @@ import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/cor
 import { User } from 'ngx-login-client';
 import { ListConfig, Filter, FilterConfig, FilterField, FilterEvent, FilterType, SortConfig, SortEvent,
    ToolbarConfig, SortField} from 'patternfly-ng';
+import { Subject, BehaviorSubject, Subscription } from 'rxjs';
+
+export enum ViewState {
+  INIT = 'INIT',
+  EMPTY = 'EMPTY',
+  LOADING = 'LOADING',
+  SHOW = 'SHOW'
+}
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit, OnChanges {
+
+  viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
+
+  private readonly subscriptions: Subscription[] = [];
+
 
   @Input() users: User[];
 
@@ -59,7 +73,13 @@ export class UsersListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     this.items = changes.users.currentValue;
+    this.viewState.next(this.users ? ViewState.SHOW : ViewState.EMPTY);
   }
+
+  initItems(event: { pageSize: number }): void {
+    setTimeout(() => this.viewState.next(ViewState.LOADING));
+  }
+
    // Filter
    applyFilters(filters: Filter[]): void {
     this.items = [];
