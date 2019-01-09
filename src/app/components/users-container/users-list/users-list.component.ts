@@ -73,7 +73,7 @@ export class UsersListComponent implements OnInit, OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     this.items = changes.users.currentValue;
-    this.viewState.next(this.users ? ViewState.SHOW : ViewState.EMPTY);
+    this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
   }
 
   initItems(event: { pageSize: number }): void {
