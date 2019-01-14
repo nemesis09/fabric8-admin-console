@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { User } from 'ngx-login-client';
 import { ListConfig, Filter, FilterConfig, FilterField, FilterEvent, FilterType, SortConfig, SortEvent,
-   ToolbarConfig, SortField} from 'patternfly-ng';
+  ToolbarConfig, SortField, EmptyStateConfig} from 'patternfly-ng';
 import { Subject, BehaviorSubject, Subscription } from 'rxjs';
 
 export enum ViewState {
@@ -19,11 +19,12 @@ export enum ViewState {
 export class UsersListComponent implements OnInit, OnChanges {
 
   viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
-
   private readonly subscriptions: Subscription[] = [];
-
+  emptyStateConfig: EmptyStateConfig;
+  initStateConfig: EmptyStateConfig;
 
   @Input() users: User[];
+  @Input() isSearchComplete: boolean;
 
   listConfig: ListConfig;
   filterConfig: FilterConfig;
@@ -70,14 +71,28 @@ export class UsersListComponent implements OnInit, OnChanges {
        sortConfig: this.sortConfig
     } as ToolbarConfig;
 
-  }
-  ngOnChanges(changes: SimpleChanges) {
-    this.items = changes.users.currentValue;
-    this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
-  }
+    this.initStateConfig = {
+      iconStyleClass: 'pficon-warning-triangle-o',
+      info: 'Based on your search, the results will be listed here',
+      title: 'Your Search Results Will Appear Here'
+    } as EmptyStateConfig;
 
-  initItems(event: { pageSize: number }): void {
-    setTimeout(() => this.viewState.next(ViewState.LOADING));
+    this.emptyStateConfig = {
+      iconStyleClass: 'pficon-warning-triangle-o',
+      info: 'No result found for your searched query. Change your search string and try again',
+      title: 'No Results Found'
+    } as EmptyStateConfig;
+
+  }
+  ngOnChanges(change: SimpleChanges) {
+    if (change.isSearchComplete.firstChange !== true) {
+      if (change.isSearchComplete.currentValue !== false) {
+        this.items = change.users ? change.users.currentValue : this.users;
+        this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
+      } else {
+        this.viewState.next(ViewState.LOADING);
+      }
+    }
   }
 
    // Filter
