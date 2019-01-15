@@ -73,7 +73,7 @@ export class UsersListComponent implements OnInit, OnChanges {
 
     this.initStateConfig = {
       iconStyleClass: 'pficon-warning-triangle-o',
-      info: 'Based on your search, the results will be listed here',
+      info: 'Please enter a search string',
       title: 'Your Search Results Will Appear Here'
     } as EmptyStateConfig;
 
@@ -85,8 +85,8 @@ export class UsersListComponent implements OnInit, OnChanges {
 
   }
   ngOnChanges(change: SimpleChanges) {
-    if (change.isSearchComplete.firstChange !== true) {
-      if (change.isSearchComplete.currentValue !== false) {
+    if (!change.isSearchComplete.firstChange) {
+      if (change.isSearchComplete.currentValue) {
         this.items = change.users ? change.users.currentValue : this.users;
         this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
       } else {

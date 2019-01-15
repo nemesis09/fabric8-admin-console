@@ -15,29 +15,27 @@
     <ng-container [ngSwitch]="(viewState | async)">
   
       <ng-container *ngSwitchCase="'INIT'">
-        <div class="row col-md-6 col-md-offset-3" style = "padding-top: 3%">
-          <div class="col-sm-12">
+        <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
             <div class="form-group">
               <pfng-empty-state [config]="initStateConfig"></pfng-empty-state>
             </div>
           </div>
-        </div>
       </ng-container>
   
       <ng-container *ngSwitchCase="'EMPTY'">
-        <div class="row col-md-6 col-md-offset-3" style = "padding-top: 3%">
-          <div class="col-sm-12">
+        <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
             <div class="form-group ">
               <pfng-empty-state [config]="emptyStateConfig"></pfng-empty-state>
             </div>
           </div>
-        </div>
       </ng-container>
   
       <ng-container *ngSwitchCase="'LOADING'">
-        <div class="loading-state col-md-6 col-md-offset-3">
-          <span class="spinner spinner-lg spinner-inline"></span>
-          <span class="spinner-label">Loading your results...</span>
+        <div class="blank-slate-pf loading-spinner">
+          <div class="blank-slate-pf-icon">
+            <span class="spinner spinner-lg spinner-inline"></span>
+          </div>
+          <h5>Loading your results...</h5>
         </div>
       </ng-container>
   

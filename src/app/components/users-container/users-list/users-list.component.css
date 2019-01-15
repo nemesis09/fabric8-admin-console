@@ -6,3 +6,8 @@
 .user-list {
   margin-top: 40px;
 }
+
+.loading-spinner {
+  background-color: white;
+  border: none
+}
