@@ -9,11 +9,9 @@ export class HeaderComponent implements OnInit {
   @Input() loggedInUser;
   @Output() logoutClick = new EventEmitter();
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   handleLogoutClick(): void {
     this.logoutClick.emit();
   }
-
 }

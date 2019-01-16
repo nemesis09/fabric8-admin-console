@@ -10,10 +10,7 @@ import { AuthenticationService } from 'ngx-login-client';
 export class AppComponent implements OnInit {
   loggedInUser = false;
 
-  constructor(
-    private authService: AuthenticationService,
-    private loginService: LoginService
-  ) {
+  constructor(private authService: AuthenticationService, private loginService: LoginService) {
     this.loggedInUser = this.authService.isLoggedIn();
   }
 

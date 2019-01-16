@@ -1,7 +1,18 @@
 import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { User } from 'ngx-login-client';
-import { ListConfig, Filter, FilterConfig, FilterField, FilterEvent, FilterType, SortConfig, SortEvent,
-  ToolbarConfig, SortField, EmptyStateConfig} from 'patternfly-ng';
+import {
+  ListConfig,
+  Filter,
+  FilterConfig,
+  FilterField,
+  FilterEvent,
+  FilterType,
+  SortConfig,
+  SortEvent,
+  ToolbarConfig,
+  SortField,
+  EmptyStateConfig
+} from 'patternfly-ng';
 import { Subject, BehaviorSubject, Subscription } from 'rxjs';
 
 export enum ViewState {
@@ -16,6 +27,7 @@ export enum ViewState {
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
+
 export class UsersListComponent implements OnInit, OnChanges {
 
   viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
@@ -35,40 +47,50 @@ export class UsersListComponent implements OnInit, OnChanges {
   sortConfig: SortConfig;
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
+  header: String = 'No User Found';
+  message: String = 'Please Try Again';
+  type: string;
+  types: string[];
 
   ngOnInit(): void {
     this.filterConfig = {
-      fields: [{
-        id: 'name',
-        title: 'Name',
-        placeholder: 'Filter by Name...',
-        type: FilterType.TEXT
-      }, {
-        id: 'email',
-        title: 'Email',
-        placeholder: 'Filter by Email...',
-        type: FilterType.TEXT
-      }] as FilterField[],
+      fields: [
+        {
+          id: 'name',
+          title: 'Name',
+          placeholder: 'Filter by Name...',
+          type: FilterType.TEXT
+        },
+        {
+          id: 'email',
+          title: 'Email',
+          placeholder: 'Filter by Email...',
+          type: FilterType.TEXT
+        }
+      ] as FilterField[],
       appliedFilters: []
     } as FilterConfig;
     this.listConfig = {
       useExpandItems: true
     } as ListConfig;
     this.sortConfig = {
-      fields: [{
-        id: 'name',
-        title: 'Name',
-        sortType: 'alpha'
-      }, {
-        id: 'email',
-        title: 'Email',
-        sortType: 'alpha'
-      }],
+      fields: [
+        {
+          id: 'name',
+          title: 'Name',
+          sortType: 'alpha'
+        },
+        {
+          id: 'email',
+          title: 'Email',
+          sortType: 'alpha'
+        }
+      ],
       isAscending: this.isAscendingSort
     } as SortConfig;
     this.toolbarConfig = {
       filterConfig: this.filterConfig,
-       sortConfig: this.sortConfig
+      sortConfig: this.sortConfig
     } as ToolbarConfig;
 
     this.initStateConfig = {
@@ -141,7 +163,9 @@ export class UsersListComponent implements OnInit, OnChanges {
   compare(item1: any, item2: any): number {
     let compValue = 0;
     if (this.currentSortField.id === 'name') {
-      compValue = item1.attributes.fullName.localeCompare(item2.attributes.fullName);
+      compValue = item1.attributes.fullName.localeCompare(item2.attributes.fullName, 'en', {
+        sensitivity: 'base'
+      });
     } else if (this.currentSortField.id === 'email') {
       compValue = item1.attributes.email.localeCompare(item2.attributes.email);
     }

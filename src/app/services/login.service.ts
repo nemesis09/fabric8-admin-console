@@ -7,7 +7,6 @@ import { Broadcaster } from 'ngx-base';
   providedIn: 'root'
 })
 export class LoginService {
-
   static readonly REDIRECT_URL_KEY = 'redirectUrl';
   static readonly DEFAULT_URL = '/_home';
   static readonly LOGIN_URL = '/login';
@@ -52,7 +51,6 @@ export class LoginService {
     }
 
     if (result['token_json']) {
-      console.log(result);
       // Handle the case that this is a login
       this.authService.logIn(result['token_json']);
       // Navigate back to the current URL to clear up the query string

@@ -16,12 +16,13 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
     return this.checkLogin(state.url);
   }
 
   checkLogin(url: string): boolean {
-    if (this.authService.isLoggedIn()) { console.log('Auth guard true'); return true; }
+    if (this.authService.isLoggedIn()) {  return true; }
 
     // Store the attempted URL for redirecting
     this.loginService.redirectUrl = url;

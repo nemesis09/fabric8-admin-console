@@ -1,102 +1,103 @@
-<div>
-  <div class="toolbar">
-    <!--toolbar starts -->
-    <div class="container-fluid">
-      <div class="row toolbar-pf">
-        <div class="col-sm-12 toolbar">
-          <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"></pfng-toolbar>
-        </div>
+<!--toolbar starts -->
+<div class="toolbar">
+  <div class="container-fluid">
+    <div class="row toolbar-pf">
+      <div class="col-sm-12 toolbar">
+        <pfng-toolbar [config]="toolbarConfig" (onFilterChange)="filterChanged($event)" (onSortChange)="sortChanged($event)"></pfng-toolbar>
       </div>
     </div>
   </div>
-  <!--toolbar ends-->
+</div>
+<!--toolbar ends-->
   
-  <div class="results-area">
-    <ng-container [ngSwitch]="(viewState | async)">
+<div class="results-area">
+  <ng-container [ngSwitch]="(viewState | async)">
   
-      <ng-container *ngSwitchCase="'INIT'">
-        <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
+    <ng-container *ngSwitchCase="'INIT'">
+      <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
+        <div class="form-group">
+          <pfng-empty-state [config]="initStateConfig"></pfng-empty-state>
+        </div>
+      </div>
+    </ng-container>
+  
+    <ng-container *ngSwitchCase="'EMPTY'">
+      <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
+        <div class="form-group ">
+          <pfng-empty-state [config]="emptyStateConfig"></pfng-empty-state>
+        </div>
+      </div>
+    </ng-container>
+  
+    <ng-container *ngSwitchCase="'LOADING'">
+      <div class="blank-slate-pf loading-spinner">
+        <div class="blank-slate-pf-icon">
+          <span class="spinner spinner-lg spinner-inline"></span>
+        </div>
+        <h5>Loading your results...</h5>
+      </div>
+    </ng-container>
+  
+    <ng-container *ngSwitchCase="'SHOW'">
+      <!-- User List starts -->
+      <div class="padding-15" *ngIf="users?.length > 0" appInfiniteScroll>
+        <div class="row">
+          <div class="col-sm-12">
             <div class="form-group">
-              <pfng-empty-state [config]="initStateConfig"></pfng-empty-state>
+              <pfng-list [config]="listConfig" [expandTemplate]="expandTemplate" [items]="items" [itemTemplate]="itemTemplate">
+                <ng-template #itemTemplate let-item="item">
+                  <div class="list-pf-left userlist">
+                    <span class="fa list-pf-icon list-pf-icon-bordered list-pf-icon-small">
+                      <div *ngIf="(item.attributes.imageURL !== undefined && item.attributes.imageURL.length !== 0); then userImage else defaultImage"></div>
+                      <ng-template #userImage>
+                        <img src="{{item.attributes.imageURL}}" class="img-responsive icon-user">
+                      </ng-template>
+                      <ng-template #defaultImage>
+                        <img src="../../../../assets/img/profile-user.png" class="img-responsive icon-user">
+                      </ng-template>
+                    </span>
+                  </div>
+                  <div class="list-pf-content-wrapper">
+                    <div class="list-pf-main-content">
+                      <div class="list-pf-title">{{item.attributes.fullName}}</div>
+                      <div class="list-pf-description text-overflow-pf">{{item.attributes.username}}</div>
+                      <div class="list-pf-description text-overflow-pf">{{item.attributes.email}}</div>
+                    </div>
+                  </div>
+                </ng-template>
+                <ng-template #expandTemplate let-item="item" let-index="index" id="expandTemplate">
+                  <div class="col-md-12">
+                    <li>
+                      <span>
+                        <strong>Company: </strong> {{item.attributes.company}}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Bio: </strong>
+                      <span *ngIf="item.attributes.bio; else noBio "> {{item.attributes.bio}}</span>
+                      <ng-template #noBio>No Bio found.</ng-template>
+                    </li>
+                    <li>
+                      <span>
+                        <strong>User ID: </strong> {{item.attributes.userID}}
+                      </span>
+                    </li>
+                    <li>
+                      <strong>Url: </strong>
+                      <span *ngIf="item.attributes.url;else noUrl "> {{item.attributes.url}}</span>
+                      <ng-template #noUrl>No Url Found</ng-template>
+                    </li>
+                  </div>
+                </ng-template>
+              </pfng-list>
             </div>
           </div>
-      </ng-container>
-  
-      <ng-container *ngSwitchCase="'EMPTY'">
-        <div class="col-md-6 col-md-offset-3" style = "padding-top: 3%">
-            <div class="form-group ">
-              <pfng-empty-state [config]="emptyStateConfig"></pfng-empty-state>
-            </div>
-          </div>
-      </ng-container>
-  
-      <ng-container *ngSwitchCase="'LOADING'">
-        <div class="blank-slate-pf loading-spinner">
-          <div class="blank-slate-pf-icon">
-            <span class="spinner spinner-lg spinner-inline"></span>
-          </div>
-          <h5>Loading your results...</h5>
-        </div>
-      </ng-container>
-  
-      <ng-container *ngSwitchCase="'SHOW'">
-        <!-- User List starts -->
-        <div class="padding-15" *ngIf="users?.length > 0" appInfiniteScroll>
-          <div class="row">
-            <div class="col-sm-12">
-              <div class="form-group">
-                <pfng-list [config]="listConfig" [expandTemplate]="expandTemplate" [items]="items" [itemTemplate]="itemTemplate">
-                  <ng-template #itemTemplate let-item="item">
-              <div class="list-pf-left userlist">
-                <span class="fa list-pf-icon list-pf-icon-bordered list-pf-icon-small">
-                  <div *ngIf="(item.attributes.imageURL !== undefined && item.attributes.imageURL.length !== 0); then userImage else defaultImage"></div>
-                  <ng-template #userImage>
-                    <img src="{{item.attributes.imageURL}}" class="img-responsive icon-user">
-                  </ng-template>
-                  <ng-template #defaultImage>
-                    <img src="../../../../assets/img/profile-user.png" class="img-responsive icon-user">
-                  </ng-template>
-                </span>
-              </div>
-              <div class="list-pf-content-wrapper">
-                <div class="list-pf-main-content">
-                  <div class="list-pf-title">{{item.attributes.fullName}}</div>
-                  <div class="list-pf-description text-overflow-pf">{{item.attributes.username}}</div>
-                  <div class="list-pf-description text-overflow-pf">{{item.attributes.email}}</div>
-                </div>
-              </div>
-            </ng-template>
-            <ng-template #expandTemplate let-item="item" let-index="index" id="expandTemplate">
-              <div class="col-md-12">
-                <li>
-                  <span>
-                    <strong>Company: </strong> {{item.attributes.company}}
-                  </span>
-                </li>
-                <li>
-                  <strong>Bio: </strong>
-                  <span *ngIf="item.attributes.bio; else noBio "> {{item.attributes.bio}}</span>
-                  <ng-template #noBio>No Bio found.</ng-template>
-                </li>
-                <li>
-                  <span>
-                    <strong>User ID: </strong> {{item.attributes.userID}}
-                  </span>
-                </li>
-                <li>
-                  <strong>Url: </strong>
-                  <span *ngIf="item.attributes.url;else noUrl "> {{item.attributes.url}}</span>
-                  <ng-template #noUrl>No Url Found</ng-template>
-                </li>
-              </div>
-            </ng-template>
-          </pfng-list>
         </div>
       </div>
-    </div>
-  </div>
-  <!--Expandion Ends-->
+      <!--Users List Ends-->
+    </ng-container>
   </ng-container>
-  </ng-container><!-- ngSwitch -->
-  </div><!-- results-area -->
+  <!-- ngSwitch Ends-->
+</div>
+<!-- results-area -->
   

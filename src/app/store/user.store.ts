@@ -6,7 +6,6 @@ import { User } from 'ngx-login-client';
   providedIn: 'root'
 })
 export class UserStore {
-
   private _users: BehaviorSubject<User[]> = new BehaviorSubject([]);
 
   get users() {

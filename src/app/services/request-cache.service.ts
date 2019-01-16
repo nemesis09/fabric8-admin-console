@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse } from '@angular/common/http';
 import { AsyncSubject } from 'rxjs';
 
-
 export interface RequestCacheItem {
   asyncResponse: AsyncSubject<HttpResponse<any>>;
   lastRead: number;
@@ -12,7 +11,6 @@ const CACHE_TTL = 300000; // maximum cache age (ms)
 
 @Injectable()
 export class RequestCache {
-
   public cache = new Map<string, RequestCacheItem>();
 
   get(req: HttpRequest<any>): AsyncSubject<HttpResponse<any>> | undefined {
