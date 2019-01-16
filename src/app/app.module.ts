@@ -15,7 +15,7 @@ import { UserService as userService } from '../app/services/user.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { Broadcaster, Logger } from 'ngx-base';
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { HomeComponent } from './components/home/home.component';
 import { PageNotFoundComponent } from './components/layout/page-not-found/page-not-found.component';

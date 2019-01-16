@@ -13,7 +13,7 @@ import {
   SortField,
   EmptyStateConfig
 } from 'patternfly-ng';
-import { Subject, BehaviorSubject, Subscription } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 export enum ViewState {
   INIT = 'INIT',
@@ -31,26 +31,20 @@ export enum ViewState {
 export class UsersListComponent implements OnInit, OnChanges {
 
   viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
-  private readonly subscriptions: Subscription[] = [];
-  emptyStateConfig: EmptyStateConfig;
-  initStateConfig: EmptyStateConfig;
 
   @Input() users: User[];
   @Input() isSearchComplete: boolean;
 
+  emptyStateConfig: EmptyStateConfig;
+  initStateConfig: EmptyStateConfig;
   listConfig: ListConfig;
   filterConfig: FilterConfig;
   filtersText: String = '';
   items: User[];
   isAscendingSort: Boolean = true;
-  separator: Object;
   sortConfig: SortConfig;
   currentSortField: SortField;
   toolbarConfig: ToolbarConfig;
-  header: String = 'No User Found';
-  message: String = 'Please Try Again';
-  type: string;
-  types: string[];
 
   ngOnInit(): void {
     this.filterConfig = {
@@ -70,9 +64,11 @@ export class UsersListComponent implements OnInit, OnChanges {
       ] as FilterField[],
       appliedFilters: []
     } as FilterConfig;
+
     this.listConfig = {
       useExpandItems: true
     } as ListConfig;
+
     this.sortConfig = {
       fields: [
         {
@@ -88,6 +84,7 @@ export class UsersListComponent implements OnInit, OnChanges {
       ],
       isAscending: this.isAscendingSort
     } as SortConfig;
+
     this.toolbarConfig = {
       filterConfig: this.filterConfig,
       sortConfig: this.sortConfig
@@ -106,6 +103,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     } as EmptyStateConfig;
 
   }
+
   ngOnChanges(change: SimpleChanges) {
     if (!change.isSearchComplete.firstChange) {
       if (change.isSearchComplete.currentValue) {
@@ -117,8 +115,8 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
   }
 
-   // Filter
-   applyFilters(filters: Filter[]): void {
+  // Filter
+  applyFilters(filters: Filter[]): void {
     this.items = [];
     if (filters && filters.length > 0) {
       this.users.forEach((item) => {
@@ -131,6 +129,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     this.toolbarConfig.filterConfig.resultsCount = this.items.length;
   }
+
   // Handle filter changes
   filterChanged($event: FilterEvent): void {
     this.filtersText = '';
@@ -139,6 +138,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     });
     this.applyFilters($event.appliedFilters);
   }
+
   matchesFilter(item: any, filter: Filter): boolean {
     let match = true;
     const re = new RegExp(filter.value, 'i');
@@ -149,6 +149,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     return match;
   }
+
   matchesFilters(item: any, filters: Filter[]): boolean {
     let matches = true;
     filters.forEach((filter) => {
@@ -159,6 +160,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     });
     return matches;
   }
+
   // Sort
   compare(item1: any, item2: any): number {
     let compValue = 0;
@@ -174,6 +176,7 @@ export class UsersListComponent implements OnInit, OnChanges {
     }
     return compValue;
   }
+
   // Handle sort changes
   sortChanged($event: SortEvent): void {
     this.currentSortField = $event.field;
