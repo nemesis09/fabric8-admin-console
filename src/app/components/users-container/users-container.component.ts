@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { User } from 'ngx-login-client';
+import { User, UserService as ngxUserService } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
 import { UserStore } from '../../store/user.store';
 import { UserService } from 'src/app/services/user.service';
@@ -15,14 +15,22 @@ export class UsersContainerComponent implements OnInit, OnDestroy {
   isSubscriptionError: boolean;
   isSearchComplete: boolean;
 
-  constructor(private userStore: UserStore, private userService: UserService) {}
+  constructor(
+    private userStore: UserStore,
+    private userService: UserService,
+    private tempUserService: ngxUserService
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isSearchComplete = false;
+  }
 
   searchUsers(searchTerm: string): void {
     this.isSearchComplete = false;
     this.subscriptions.add(
-      this.userService.getUsersByName(searchTerm).subscribe(
+      /* Use admin console api after it is fixed
+      this.userService.getUsersByName(searchTerm).subscribe( */
+      this.tempUserService.getUsersBySearchString(searchTerm).subscribe(
         (users: User[]) => {
           this.users = users;
           this.isSearchComplete = true;
