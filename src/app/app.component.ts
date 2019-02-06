@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('app.component.ts');
     this.loginService.login();
     this.isLoggedInUser = this.authService.isLoggedIn();
   }

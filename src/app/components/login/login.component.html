@@ -1,19 +1,25 @@
-
-<div class="row login-component">
-  <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-    <div class="row">
-      <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
-        <div class="card-pf card-pf-accented card-pf-aggregate-status">
-          <header class="login-pf-header">
-            <h1>Log In to Your Openshift.io Account</h1>
-          </header>
-          <img class="user-icon" src="../../../assets/img/profile-user.png">
-          <button type="submit" class="btn btn-primary btn-block btn-lg" (click)="handleLogin()">Log In</button>
-          <footer>
-            <p class="login-pf-signup">Need an account?<a href="https://openshift.io">Sign up</a></p>
-          </footer>
-        </div><!-- card -->
-      </div><!-- col -->
-    </div><!-- row -->
-  </div><!-- col -->
-</div><!-- row -->
+<div class="pf-c-background-image">
+</div>
+<div class="pf-c-login">
+  <div class="pf-c-login__container">
+    <header class="pf-c-login__header">
+      <img class="pf-c-brand" src="../../../../src/assets/img/info-icon.svg" alt="Admin Console Logo">
+      <p>Admin Console is a feature of OSIO that will help in managing Admin users on OSIO</p>
+    </header>
+    <main class="pf-c-login__main">
+      <header class="pf-c-login__main-header">
+        <h1 class="pf-c-title pf-m-3xl">
+          Log in to your OpenShift.io ccount
+        </h1>
+        <p>
+          <button type="submit" class="pf-c-button pf-m-primary pf-m-block" (click)="handleLogin()">Log In</button>
+        </p>
+        <p>
+            Need an account?
+          <a href="https://www.patternfly.org/">Sign up.</a>
+        </p>
+      </header>
+    </main>
+  </div>
+</div>
+<!--Pf next Ends-->

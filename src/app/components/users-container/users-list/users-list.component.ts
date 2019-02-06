@@ -13,14 +13,7 @@ import {
   SortField,
   EmptyStateConfig
 } from 'patternfly-ng';
-import { Subject, BehaviorSubject } from 'rxjs';
-
-export enum ViewState {
-  INIT = 'INIT',
-  EMPTY = 'EMPTY',
-  LOADING = 'LOADING',
-  SHOW = 'SHOW'
-}
+import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-list',
@@ -30,157 +23,168 @@ export enum ViewState {
 
 export class UsersListComponent implements OnInit, OnChanges {
 
-  viewState: Subject<ViewState> = new BehaviorSubject<ViewState>(ViewState.INIT);
-
   @Input() users: User[];
-  @Input() isSearchComplete: boolean;
+  ascending: Boolean;
 
-  emptyStateConfig: EmptyStateConfig;
-  initStateConfig: EmptyStateConfig;
-  listConfig: ListConfig;
-  filterConfig: FilterConfig;
-  filtersText: String = '';
+  // listConfig: ListConfig;
+  // filterConfig: FilterConfig;
+  // filtersText: String = '';
   items: User[];
-  isAscendingSort: Boolean = true;
-  sortConfig: SortConfig;
-  currentSortField: SortField;
-  toolbarConfig: ToolbarConfig;
+  // filterData: User[];
+  isAscendingSort: Boolean = false;
+  // separator: Object;
+  // sortConfig: SortConfig;
+  // currentSortField: SortField;
+  // toolbarConfig: ToolbarConfig;
+  // header: String = 'No User Found';
+  // message: String = 'Please Try Again';
+  // type: string;
+  // types: string[];
+  filterCount = 0;
+  noUser = -1;
 
   ngOnInit(): void {
-    this.filterConfig = {
-      fields: [
-        {
-          id: 'name',
-          title: 'Name',
-          placeholder: 'Filter by Name...',
-          type: FilterType.TEXT
-        },
-        {
-          id: 'email',
-          title: 'Email',
-          placeholder: 'Filter by Email...',
-          type: FilterType.TEXT
-        }
-      ] as FilterField[],
-      appliedFilters: []
-    } as FilterConfig;
+    // console.log('users after searching', this.users);
 
-    this.listConfig = {
-      useExpandItems: true
-    } as ListConfig;
-
-    this.sortConfig = {
-      fields: [
-        {
-          id: 'name',
-          title: 'Name',
-          sortType: 'alpha'
-        },
-        {
-          id: 'email',
-          title: 'Email',
-          sortType: 'alpha'
-        }
-      ],
-      isAscending: this.isAscendingSort
-    } as SortConfig;
-
-    this.toolbarConfig = {
-      filterConfig: this.filterConfig,
-      sortConfig: this.sortConfig
-    } as ToolbarConfig;
-
-    this.initStateConfig = {
-      iconStyleClass: 'pficon-warning-triangle-o',
-      info: 'Please enter a search string',
-      title: 'Your Search Results Will Appear Here'
-    } as EmptyStateConfig;
-
-    this.emptyStateConfig = {
-      iconStyleClass: 'pficon-warning-triangle-o',
-      info: 'No result found for your searched query. Change your search string and try again',
-      title: 'No Results Found'
-    } as EmptyStateConfig;
-
+    // this.filterConfig = {
+    //   fields: [
+    //     {
+    //       id: 'name',
+    //       title: 'Name',
+    //       placeholder: 'Filter by Name...',
+    //       type: FilterType.TEXT
+    //     },
+    //     {
+    //       id: 'email',
+    //       title: 'Email',
+    //       placeholder: 'Filter by Email...',
+    //       type: FilterType.TEXT
+    //     }
+    //   ] as FilterField[],
+    //   appliedFilters: []
+    // } as FilterConfig;
+    // this.listConfig = {
+    //   useExpandItems: true
+    // } as ListConfig;
+    // this.sortConfig = {
+    //   fields: [
+    //     {
+    //       id: 'name',
+    //       title: 'Name',
+    //       sortType: 'alpha'
+    //     },
+    //     {
+    //       id: 'email',
+    //       title: 'Email',
+    //       sortType: 'alpha'
+    //     }
+    //   ],
+    //   isAscending: this.isAscendingSort
+    // } as SortConfig;
+    // this.toolbarConfig = {
+    //   filterConfig: this.filterConfig,
+    //   sortConfig: this.sortConfig
+    // } as ToolbarConfig;
+    console.log('users-list.ts');
   }
-
-  ngOnChanges(change: SimpleChanges) {
-    if (!change.isSearchComplete.firstChange) {
-      if (change.isSearchComplete.currentValue) {
-        this.items = change.users ? change.users.currentValue : this.users;
-        this.viewState.next(this.items.length !== 0 ? ViewState.SHOW : ViewState.EMPTY);
-      } else {
-        this.viewState.next(ViewState.LOADING);
-      }
-    }
+  ngOnChanges(changes: SimpleChanges) {
+    this.items = changes.users.currentValue;
+   // this.count = changes.count.currentValue;
   }
-
-  // Filter
-  applyFilters(filters: Filter[]): void {
+  filterUser( filterTerm: string) {
+    // console.log('filterUser');
     this.items = [];
-    if (filters && filters.length > 0) {
-      this.users.forEach((item) => {
-        if (this.matchesFilters(item, filters)) {
-          this.items.push(item);
-        }
-      });
-    } else {
-      this.items = this.users;
-    }
-    this.toolbarConfig.filterConfig.resultsCount = this.items.length;
-  }
-
-  // Handle filter changes
-  filterChanged($event: FilterEvent): void {
-    this.filtersText = '';
-    $event.appliedFilters.forEach((filter) => {
-      this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
-    });
-    this.applyFilters($event.appliedFilters);
-  }
-
-  matchesFilter(item: any, filter: Filter): boolean {
-    let match = true;
-    const re = new RegExp(filter.value, 'i');
-    if (filter.field.id === 'name') {
-      match = item.attributes.fullName.match(re) !== null;
-    } else if (filter.field.id === 'email') {
-      match = item.attributes.email.match(re) !== null;
-    }
-    return match;
-  }
-
-  matchesFilters(item: any, filters: Filter[]): boolean {
-    let matches = true;
-    filters.forEach((filter) => {
-      if (!this.matchesFilter(item, filter)) {
-        matches = false;
-        return matches;
+    for (let i = 0; i < this.users.length; i++) {
+      if (this.users[i].attributes.fullName.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1 ||
+      this.users[i].attributes.email.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1 ||
+      this.users[i].attributes.username.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1) {
+        this.items.push(this.users[i]);
+        // console.log('items', [i], this.items);
+        this.filterCount++;
+      //  console.log(this.filterCount);
       }
-    });
-    return matches;
+  }
+    if (this.filterCount === 0) {
+      this.noUser = 0;
+    }
+  }
+  clearFilter() {
+    this.items = [];
+    this.filterCount = 0;
+    this.items = this.users;
+    this.noUser = -1;
+   // console.log('from clear Filter', this.items);
+  }
+  // Filter
+  // applyFilters(filters: Filter[]): void {
+  //   this.items = [];
+  //   if (filters && filters.length > 0) {
+  //     this.users.forEach((item) => {
+  //       if (this.matchesFilters(item, filters)) {
+  //         this.items.push(item);
+  //       }
+  //     });
+  //   } else {
+  //     this.items = this.users;
+  //   }
+  //   this.toolbarConfig.filterConfig.resultsCount = this.items.length;
+  // }
+  // Handle filter changes
+  // filterChanged($event: FilterEvent): void {
+  //   this.filtersText = '';
+  //   $event.appliedFilters.forEach((filter) => {
+  //     this.filtersText += filter.field.title + ' : ' + filter.value + '\n';
+  //   });
+  //   this.applyFilters($event.appliedFilters);
+  // }
+  // matchesFilter(item: any, filter: Filter): boolean {
+  //   let match = true;
+  //   const re = new RegExp(filter.value, 'i');
+  //   if (filter.field.id === 'name') {
+  //     match = item.attributes.fullName.match(re) !== null;
+  //   } else if (filter.field.id === 'email') {
+  //     match = item.attributes.email.match(re) !== null;
+  //   }
+  //   return match;
+  // }
+  // matchesFilters(item: any, filters: Filter[]): boolean {
+  //   let matches = true;
+  //   filters.forEach((filter) => {
+  //     if (!this.matchesFilter(item, filter)) {
+  //       matches = false;
+  //       return matches;
+  //     }
+  //   });
+  //   return matches;
+  // }
+  sortUser(field: String) {
+    this.ascending = !this.ascending;
+    console.log('ascending is ', this.ascending);
+    console.log('sorting!!');
+    this.isAscendingSort = !this.isAscendingSort;
+    this.items.sort((item1: any, item2: any) => this.compare(item1, item2, field));
+    console.log('field is ', field);
   }
 
   // Sort
-  compare(item1: any, item2: any): number {
+  compare(item1: any, item2: any, field: String): number {
+    console.log('sorting via', field);
     let compValue = 0;
-    if (this.currentSortField.id === 'name') {
+    if (field === 'fullName') {
       compValue = item1.attributes.fullName.localeCompare(item2.attributes.fullName, 'en', {
         sensitivity: 'base'
       });
-    } else if (this.currentSortField.id === 'email') {
-      compValue = item1.attributes.email.localeCompare(item2.attributes.email);
+    } else {
+      if (field === 'email') {
+        compValue = item1.attributes.email.localeCompare(item2.attributes.email, 'en', {
+          sensitivity: 'base'
+        });
+      }
     }
+   // console.log(compValue);
     if (!this.isAscendingSort) {
       compValue = compValue * -1;
     }
     return compValue;
-  }
-
-  // Handle sort changes
-  sortChanged($event: SortEvent): void {
-    this.currentSortField = $event.field;
-    this.isAscendingSort = $event.isAscending;
-    this.items.sort((item1: any, item2: any) => this.compare(item1, item2));
   }
 }

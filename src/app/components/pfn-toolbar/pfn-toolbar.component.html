@@ -1,0 +1,17 @@
+<!--pfToolBar Starts-->
+<div class="pf-l-toolbar">
+      <div class="pf-l-toolbar__item">
+        <div class="pf-c-input-group">
+          <input #filterField class="pf-c-form-control" type="text" (keyup.enter)="[handleFilter(filterField.value)]" placeholder="Filter..." >
+          <button class="pf-c-button pf-m-tertiary" (click)="handleFilter(filterField.value)">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+      <!-- <div class="pf-l-toolbar__item">
+        <button class="pf-c-button pf-m-plain" aria-label="Sort A-Z"  (click)="handleSort()">
+          <i class="fas" [ngClass]="{'fa-sort-alpha-down': ascending, 'fa-sort-alpha-up':!ascending}"></i>
+        </button>
+      </div> -->
+  </div>
+<!--pftoolBar Ends-->

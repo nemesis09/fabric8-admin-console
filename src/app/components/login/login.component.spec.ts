@@ -6,6 +6,7 @@ import { Broadcaster, Logger } from 'ngx-base';
 import { ADMIN_API_URL } from 'src/app/shared/admin-api';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHandler } from '@angular/common/http';
+import { WindowService } from 'src/app/services/window.service';
 describe('loginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
@@ -27,6 +28,7 @@ describe('loginComponent', () => {
       UserService,
       HttpClient,
       HttpHandler,
+      WindowService,
       AuthenticationService,
       {
         provide: Router

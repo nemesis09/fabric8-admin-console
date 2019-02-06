@@ -32,7 +32,11 @@ import { RequestCache } from './services/request-cache.service';
 import { ADMIN_API_URL } from './shared/admin-api';
 import { environment } from '../../src/environments/environment';
 import { SideNavComponent } from './components/side-nav/side-nav.component';
-
+import { WindowService } from './services/window.service';
+import { PfnToolbarComponent } from './components/pfn-toolbar/pfn-toolbar.component';
+import { DemoComponent } from './components/demo/demo.component';
+import { AuditLogComponent } from './components/audit-log/audit-log.component';
+import { SidebarComponent } from './components/layout/sidebar/sidebar.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +47,11 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     UsersContainerComponent,
     UsersListComponent,
     SearchBarComponent,
-    SideNavComponent
+    SideNavComponent,
+    PfnToolbarComponent,
+    DemoComponent,
+    AuditLogComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -70,7 +78,8 @@ import { SideNavComponent } from './components/side-nav/side-nav.component';
     UserService,
     UserStore,
     HttpClient,
-    userService
+    userService,
+    WindowService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

@@ -7,6 +7,7 @@ import { AuthGuard } from './auth.guard';
  import { Router } from '@angular/router';
 import { LoginService } from '../services/login.service';
 import { ADMIN_API_URL } from './admin-api';
+import { WindowService } from '../services/window.service';
 
   describe('AuthGuard', () => {
    beforeEach(() => {
@@ -26,7 +27,8 @@ import { ADMIN_API_URL } from './admin-api';
            provide: Router
          },
          HttpClient,
-         HttpHandler
+         HttpHandler,
+         WindowService
        ]
      });
    });

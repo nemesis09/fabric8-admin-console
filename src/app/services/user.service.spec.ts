@@ -1,6 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { TestBed, async } from '@angular/core/testing';
-
 import { Broadcaster, Logger } from 'ngx-base';
 import { UserService } from '../services/user.service';
 import { AUTH_API_URL, SSO_API_URL, WIT_API_PROXY, AuthenticationService, REALM, User } from 'ngx-login-client';

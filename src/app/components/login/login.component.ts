@@ -11,6 +11,7 @@ export class LoginComponent implements OnInit {
   constructor(private loginService: LoginService, private authService: AuthenticationService) {}
 
   ngOnInit() {
+    console.log('home.component.ts');
     if (this.authService.isLoggedIn()) {
       this.loginService.redirectAfterLogin();
     }

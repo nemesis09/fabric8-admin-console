@@ -23,6 +23,7 @@ import { Logger, Broadcaster } from 'ngx-base';
 import { UserStore } from './store/user.store';
 import { RouterModule, Routes, Router } from '@angular/router';
 import { AuthGuard } from './shared/auth.guard';
+import { WindowService } from './services/window.service';
 
 describe('AppComponent', () => {
   const appRoutes: Routes = [
@@ -76,7 +77,8 @@ describe('AppComponent', () => {
           useValue: 'realm'
         },
         UserStore,
-        ToastNotificationModule
+        ToastNotificationModule,
+        WindowService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
