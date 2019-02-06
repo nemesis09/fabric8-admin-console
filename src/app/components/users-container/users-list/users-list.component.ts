@@ -11,7 +11,7 @@ import {
   SortEvent,
   ToolbarConfig,
   SortField,
-  EmptyStateConfig
+  NotificationType
 } from 'patternfly-ng';
 import { count } from 'rxjs/operators';
 
@@ -20,9 +20,7 @@ import { count } from 'rxjs/operators';
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.css']
 })
-
 export class UsersListComponent implements OnInit, OnChanges {
-
   @Input() users: User[];
   ascending: Boolean;
 
@@ -165,7 +163,6 @@ export class UsersListComponent implements OnInit, OnChanges {
     this.items.sort((item1: any, item2: any) => this.compare(item1, item2, field));
     console.log('field is ', field);
   }
-
   // Sort
   compare(item1: any, item2: any, field: String): number {
     console.log('sorting via', field);
