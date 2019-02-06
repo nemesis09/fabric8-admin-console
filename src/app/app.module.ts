@@ -31,6 +31,7 @@ import { RequestCache } from './services/request-cache.service';
 
 import { ADMIN_API_URL } from './shared/admin-api';
 import { environment } from '../../src/environments/environment';
+import { SideNavComponent } from './components/side-nav/side-nav.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { environment } from '../../src/environments/environment';
     HeaderComponent,
     UsersContainerComponent,
     UsersListComponent,
-    SearchBarComponent
+    SearchBarComponent,
+    SideNavComponent
   ],
   imports: [
     BrowserModule,
