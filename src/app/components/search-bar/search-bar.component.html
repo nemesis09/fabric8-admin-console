@@ -9,8 +9,10 @@
     </button>
   </div>
 </div> -->
-<div class="col-md-6 col-md-offset-3">
-<div class="pf-c-input-group">
+
+
+<div style="column-width: 40pc">
+<div class="pf-c-input-group" style="column-count: 3">
   <input #searchBar (keyup.enter)="handleSearch(searchBar.value)" class="pf-c-form-control" type="search" id="textInput11" name="textInput11" aria-label="search input example">
   <button (click)="handleSearch(searchBar.value)" class="pf-c-button pf-m-tertiary" aria-label="search button for search input">
     <i class="fas fa-search" aria-hidden="true"></i>
