@@ -9,8 +9,8 @@ export class PfnToolbarComponent {
   @Output() sortData = new EventEmitter();
   ascending: Boolean;
 
-  handleFilter(searchTerm): void {
-    this.filterData.emit(searchTerm);
+  handleFilter(filterTerm): void {
+    this.filterData.emit(filterTerm);
   }
 
   handleSort(isAscending): void {

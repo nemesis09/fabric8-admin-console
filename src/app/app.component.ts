@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   loggedInUser: User;
   showMenu = false;
   showDropDownMenu = false;
+  showHelpBtn = true;
 
   constructor(
     private authService: AuthenticationService,
@@ -47,5 +48,11 @@ export class AppComponent implements OnInit {
   toggleDropDownState() {
     let bool: boolean = this.showDropDownMenu;
     this.showDropDownMenu = bool === false ? true : false;
+  }
+
+  toggleHelpBtnState() {
+    let bool: boolean = this.showHelpBtn;
+    this.showHelpBtn = bool === true ? false : true;
+    console.log(this.showHelpBtn);
   }
 }

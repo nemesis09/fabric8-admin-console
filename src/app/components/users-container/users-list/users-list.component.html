@@ -10,42 +10,75 @@
   </div>
 </ng-template>
 <!-- Table Starts -->
-<table class="pf-c-table pf-m-grid-lg" *ngIf="users?.length > 0">
+<div class="result-area">
+<ng-container [ngSwitch]="(viewState | async)">
+  <ng-container *ngSwitchCase="'INIT'">
+    <div class="pf-c-empty-state">
+      <i class="fas fa-info-circle" aria-hidden="true"></i>
+      <h1 class="pf-c-title pf-m-lg">
+        Your search results will appear here
+      </h1>
+      <p class="pf-c-empty-state__body">
+        Please enter a search string
+      </p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'EMPTY'">
+      <div class="pf-c-empty-state">
+        <i class="fas fa-cubes pf-c-empty-state__icon" aria-hidden="true"></i>
+        <h1 class="pf-c-title pf-m-lg">
+          No Results Found
+        </h1>
+        <p class="pf-c-empty-state__body">
+          No result found for your searched query. Change your search string and try again
+        </p>
+      </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'LOADING'">
+    <div class="blank-slate-pf loading-spinner">
+      <div class="blank-slate-pf-icon">
+        <span class="spinner spinner-lg spinner-inline"></span>
+      </div>
+      <h5>Loading your results...</h5>
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'SHOW'">
+    <table class="pf-c-table pf-m-grid-lg" *ngIf="users?.length > 0">
   <thead>
     <tr>
-      <th scope="col">
-          Avatar
+      <th class="pf-c-table__sort">
+        <button class="pf-c-button pf-m-plain"  (click)="sortUser('fullName')">
+          Name
+          <span class="pf-c-table__sort-indicator">
+            <i class="fas" [ngClass]="{'fa-sort-alpha-down': ascending, 'fa-sort-alpha-up':!ascending}"></i>
+          </span>
+        </button>
       </th>
       <th class="pf-c-table__sort">
-          <button class="pf-c-button pf-m-plain"  (click)="sortUser('fullName')">
-            Name
-            <span class="pf-c-table__sort-indicator">
-                    <i class="fas" [ngClass]="{'fa-sort-alpha-down': ascending, 'fa-sort-alpha-up':!ascending}"></i>
-                </span>
-          </button>
-        </th>
-        <th class="pf-c-table__sort">
-            <button class="pf-c-button pf-m-plain" (click)="sortUser('email')">
-              Email
-              <span class="pf-c-table__sort-indicator">
-                <i class="fas" [ngClass]="{'fa-sort-alpha-down': ascending, 'fa-sort-alpha-up':!ascending}"></i>
-                  </span>
-            </button>
-          </th>
-          <th class="pf-c-table__sort">
-              <button class="pf-c-button pf-m-plain">
-                UserName
-              </button>
-            </th>
+        <button class="pf-c-button pf-m-plain" (click)="sortUser('email')">
+          Email
+          <span class="pf-c-table__sort-indicator">
+            <i class="fas" [ngClass]="{'fa-sort-alpha-down': ascending, 'fa-sort-alpha-up':!ascending}"></i>
+          </span>
+        </button>
+      </th>
+      <th class="pf-c-table__sort">
+        <button class="pf-c-button pf-m-plain">
+          UserName
+        </button>
+      </th>
     </tr>
   </thead>
   <tbody *ngFor="let item of items; let toggle = true;">
     <tr>
       <span>
-          <button class="pf-c-button pf-m-plain" id="expandable-toggle1" (click)="toggle = !toggle" >
-              <i class="fas" [ngClass]="{ 'fa-angle-up': toggle, 'fa-angle-down': !toggle }"></i>
-            </button>        
-      <td data-label="Avatar">
+        <button class="pf-c-button pf-m-plain" id="expandable-toggle1" (click)="toggle = !toggle" >
+          <i class="fas" [ngClass]="{ 'fa-angle-up': toggle, 'fa-angle-down': !toggle }"></i>
+        </button>        
+        <td data-label="Avatar">
           <div *ngIf="(item.attributes.imageURL !== undefined && item.attributes.imageURL.length !== 0); then userImage else defaultImage"></div>
           <ng-template #userImage>
             <img src="{{item.attributes.imageURL}}" class="img-responsive icon-user">
@@ -53,8 +86,8 @@
           <ng-template #defaultImage>
             <img src="../../../../assets/img/profile-user.png" class="img-responsive icon-user">
           </ng-template>
-      </td>
-            </span>
+        </td>
+      </span>
       <td data-label="FullName">
         {{item.attributes.fullName}}
       </td>
@@ -65,27 +98,30 @@
         {{item.attributes.username}}
       </td>
     </tr>
-      <tr class="pf-c-table__expandable-row"  [ngClass]="{ 'pf-m-expanded': toggle }">
-          <td colspan="3">
-            <div class="pf-c-table__expandable-row-content">
-              <li>
-              <strong>Bio: </strong>
-              <span *ngIf="item.attributes.bio; else noBio"> {{item.attributes.bio}}</span>
-                <ng-template #noBio>No Bio found.</ng-template>
-                </li>
-                <li>
-                    <strong>Company: </strong>
-                      <span  *ngIf="item.attributes.company; else noCompany" > {{item.attributes.company}}</span>
-                      <ng-template #noCompany>No Company found.</ng-template>
-                      </li>
-                      <li>
-                          <strong>Company: </strong>
-                            <span *ngIf="item.attributes.userID; else noID"> {{item.attributes.userID}}</span>
-                            <ng-template #noID>No ID found.</ng-template>
-                            </li>
-            </div>
-          </td>
-        </tr>
+    <tr class="pf-c-table__expandable-row"  [ngClass]="{ 'pf-m-expanded': toggle }">
+      <td colspan="3">
+        <div class="pf-c-table__expandable-row-content">
+          <li>
+            <strong>Bio: </strong>
+            <span *ngIf="item.attributes.bio; else noBio"> {{item.attributes.bio}}</span>
+            <ng-template #noBio>No Bio found.</ng-template>
+          </li>
+          <li>
+            <strong>Company: </strong>
+            <span  *ngIf="item.attributes.company; else noCompany" > {{item.attributes.company}}</span>
+            <ng-template #noCompany>No Company found.</ng-template>
+          </li>
+          <li>
+            <strong>Company: </strong>
+            <span *ngIf="item.attributes.userID; else noID"> {{item.attributes.userID}}</span>
+            <ng-template #noID>No ID found.</ng-template>
+          </li>
+        </div>
+      </td>
+    </tr>
   </tbody>
-</table>
+    </table>
+  </ng-container>
+</ng-container>
+</div>
 <!-- Table ENds -->

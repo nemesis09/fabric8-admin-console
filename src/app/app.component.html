@@ -3,27 +3,27 @@
 </div>
 <div class="pf-c-page" id="page-layout-default-nav">
   <header role="banner" class="pf-c-page__header">
-    <div class="pf-c-page__header-brand">
+    <div class="pf-c-page__header-brand" *ngIf="isLoggedInUser">
       <div class="pf-c-page__header-brand-toggle">
         <button (click)="toggleSideNavState()" class="pf-c-button pf-m-plain" id="page-layout-default-nav-nav-toggle" aria-label="Global navigation" aria-expanded="true">
           <i class="fas fa-bars" aria-hidden="true"></i>
         </button>
       </div>
       <a class="pf-c-page__header-brand-link">
-        <img class="pf-c-brand" src="" alt="Toolchain Logo">
+        <img class="pf-c-brand" src="" alt="CodeReady Toolchain">
       </a>
     </div>
     <div class="pf-c-page__header-tools">
-      <div class="pf-c-page__header-tools-group pf-m-icons pf-screen-reader">
-        <button class="pf-c-button pf-m-plain" aria-label="Help">
+      <div class="pf-c-page__header-tools-group pf-m-icons" [ngClass]="{'pf-screen-reader':showHelpBtn}">
+        <button class="pf-c-button pf-m-plain" aria-label="Help" onclick="document.location.href='https://github.com/fabric8-ui/fabric8-admin-console';">
           <i class="fas fa-question-circle" aria-hidden="true"></i>
         </button>
       </div>
-      <div class="pf-c-page__header-tools-group" *ngIf="isLoggedInUser">
-        <button class="pf-c-button pf-m-plain pf-m-mobile" aria-label="Overflow actions">
-          <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
+      <div class="pf-c-page__header-tools-group">
+        <button class="pf-c-button pf-m-plain pf-m-mobile" aria-label="Overflow actions" (click)="toggleHelpBtnState()">
+          <i class="fas" aria-hidden="true" [ngClass]="{'fa-ellipsis-v':showHelpBtn, 'fa-angle-left':!showHelpBtn}"></i>
         </button>
-        <div class="pf-m-user pf-screen-reader">
+        <div class="pf-m-user pf-screen-reader" *ngIf="isLoggedInUser">
           <div class="pf-c-dropdown">
             <button (click)="toggleDropDownState()" class="pf-c-dropdown__toggle pf-m-plain" id="page-layout-default-nav-dropdown-button" aria-expanded="false">
               {{loggedInUser.attributes.fullName}}
@@ -40,7 +40,7 @@
     </div>
     <img class="pf-c-avatar" src="{{loggedInUser.attributes.imageURL}}" alt="Avatar Image" *ngIf="isLoggedInUser">
   </header>
-  <div class="pf-c-page__sidebar" *ngIf="showMenu">
+  <div class="pf-c-page__sidebar" *ngIf="showMenu && isLoggedInUser">
     <app-side-nav></app-side-nav>
   </div>
   <main role="main" class="pf-c-page__main" style="background-color: white; padding: 1%">
